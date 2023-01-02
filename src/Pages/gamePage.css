@@ -1,0 +1,36 @@
+#board{
+    /* width: 100%;
+    height: 100%; */
+
+    /* width: 30vw;
+    height: 50vw; */
+
+    width: 40vw;
+    height: 40vw;
+
+    /* display: flex;
+    flex-direction: column; */
+
+    display: grid;
+    /* grid-template-rows: auto auto auto; */
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.block{
+    /* width: 10vw;
+    height: 10vw; */
+
+    border: 0.5vw solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+
+.rows{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: auto;
+    height: auto;
+}
