@@ -6,12 +6,15 @@ import OneVsOne from "./Pages/OneVsOne";
 import { createContext } from "react";
 import Data from "./Data";
 import ScoreTabel from "./Pages/ScoreTabel"
+import GameOverPage from "./Pages/GameOverPage";
+import DefaultPage from "./Pages/DefaultPage";
 
 export const Context = createContext();
 
 
 function App() {
   const values = Data();
+
 
   return (
     <Context.Provider value={values}>
@@ -21,7 +24,9 @@ function App() {
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/OneVsOne" element={<OneVsOne></OneVsOne>}></Route>
         <Route path="/OneVsComp/:level" element={<OneVsComp></OneVsComp>}></Route>
+        <Route path="/GameOver" element={<GameOverPage></GameOverPage>}></Route>
         <Route path="/ScoreBoard" element={<ScoreTabel></ScoreTabel>}></Route>
+        <Route path="*" element={<DefaultPage></DefaultPage>}></Route>
       </Routes>
     </div>
     </Context.Provider>

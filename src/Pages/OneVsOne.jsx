@@ -1,58 +1,78 @@
 import React, {useContext, useEffect, useState} from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {Context} from "../App";
 import "./gamePage.css";
 
+let movesCounter = 0;
+let currentPlayer = "X";
+
 function OneVsOne(props) {
   const {
-    theCurrentPlayer,
-    setTheCurrentPlayer,
     board,
     setBoard,
-    changePlayer,
     isWon,
     initTempBoard,
     reset,
+    gameOver,
+    currentGameData,
+    setCurrentGameData,
+    changePlayer,
   } = useContext(Context);
 
+  ///////////////// reset and init all data ///////////////////////
   useEffect(() => {
     reset();
+    movesCounter = 0;
+    currentPlayer = "X";
+    setCurrentGameData({...currentGameData, level: "OneVsOne"});
   }, []);
 
   function setBlock(index_row, index_block) {
-    const temp = initTempBoard(board);
+    const tempBoard = initTempBoard(board);
 
-    console.log(temp);
-
-    if (temp[index_row][index_block] == "") {
-      temp[index_row][index_block] = theCurrentPlayer;
-      setBoard(temp);
-
-      if (isWon(temp)) {
-        alert(theCurrentPlayer + " Won");
+    if (tempBoard[index_row][index_block] == "") {
+      if (currentPlayer == "X") {
+        movesCounter++;
       }
-      changePlayer();
+
+      tempBoard[index_row][index_block] = currentPlayer;
+      setBoard(tempBoard);
+
+      if (isWon(tempBoard)) {
+        gameOver(movesCounter, currentPlayer);
+      } else {
+        currentPlayer = changePlayer(currentPlayer);
+      }
     } else {
       alert("this block is already taken");
     }
+
+    console.log(currentGameData);
+    console.log(movesCounter);
   }
+
+  //////////////////////////////////////////////
+  // put turn own
+  // put move display
+  //////////////////////////////////////////////
 
   return (
     <div className="main-gamePage">
-      
       <div className="upperSection-gamePage">
         <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
-          {" "}
-          <div className="homeButton-gamePage"> Go Back To Home </div>{" "}
+          <div className="homeButton-gamePage"> Go Back To Home </div>
         </NavLink>
+
+        <div className="countMoveShow-gamePage">
+          {" "}
+          Turn is of {currentPlayer}{" "}
+        </div>
       </div>
 
       <p className="HeadLine-gamePage">
-        {" "}
-        <strong> 1 vs 1 </strong>{" "}
+        <strong> 1 vs 1 </strong>
       </p>
       <div id="board">
-        {/* {console.log(board)} */}
         {board.map((row, index_row) => (
           <div key={index_row} className="rows" id={`row${index_row}`}>
             {board[index_row].map((item, index_block) => (
@@ -61,10 +81,7 @@ function OneVsOne(props) {
                 className="block"
                 onClick={() => setBlock(index_row, index_block)}
               >
-                <p> {item}</p>
-                {/* <p>
-                {index_row},{index_block}
-              </p> */}
+                {item}
               </div>
             ))}
           </div>

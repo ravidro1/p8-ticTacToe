@@ -3,22 +3,36 @@ import {NavLink, useParams} from "react-router-dom";
 import {Context} from "../App";
 import "./gamePage.css";
 
+let movesCounter = 0;
+
 function OneVsComp(props) {
   const {
-    theCurrentPlayer,
-    setTheCurrentPlayer,
     board,
     setBoard,
-    changePlayer,
-    isWon,
     initTempBoard,
+
+    isWon,
+    gameOver,
+
     reset,
+    goToDefaultPage,
+    currentGameData,
+    setCurrentGameData,
   } = useContext(Context);
 
   const param = useParams();
 
   useEffect(() => {
     reset();
+    movesCounter = 0;
+    if (
+      param.level != "Hard" &&
+      param.level != "Medium" &&
+      param.level != "Easy"
+    ) {
+      goToDefaultPage();
+    }
+    setCurrentGameData({...currentGameData, level: param.level});
   }, []);
 
   function findTheOtherBlockInLine(
@@ -357,27 +371,31 @@ function OneVsComp(props) {
 
   function setBlock(index_row, index_block) {
     let tempBoard = initTempBoard(board);
-    let tempCurrentPlayer = "X";
-    console.log(tempBoard);
 
     if (tempBoard[index_row][index_block] == "") {
-      userTurn(tempBoard, index_row, index_block);
-      //   console.log(tempBoard);
-      if (isWon(tempBoard)) alert(tempCurrentPlayer + " won");
-      else tempCurrentPlayer = "O";
+      movesCounter++;
 
-      if (tempCurrentPlayer == "O") {
+      userTurn(tempBoard, index_row, index_block);
+
+      if (isWon(tempBoard)) {
+        gameOver(movesCounter, "X");
+      } else {
         computerTurn(tempBoard);
-        // console.log(tempBoard);
-        if (isWon(tempBoard)) alert(tempCurrentPlayer + " won");
-        else tempCurrentPlayer = "X";
+
+        if (isWon(tempBoard)) {
+          gameOver(movesCounter, "O");
+        } else {
+          // changePlayer();
+        }
+        setBoard(tempBoard);
       }
+    } else {
+      alert("this block is already taken");
     }
-    setBoard(tempBoard);
   }
 
   return (
-    <div className="main-gamePage" >
+    <div className="main-gamePage">
       <div className="upperSection-gamePage">
         <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
           {" "}
@@ -399,10 +417,7 @@ function OneVsComp(props) {
                 className="block"
                 onClick={() => setBlock(index_row, index_block)}
               >
-                {" "}
-                <p> {item}</p>
-                {"   "}
-                <p>{/* {index_row},{index_block} */}</p>
+                {item}
               </div>
             ))}
           </div>
