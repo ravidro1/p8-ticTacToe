@@ -1,5 +1,7 @@
 import React, {useContext, useEffect} from "react";
+import {NavLink, useParams} from "react-router-dom";
 import {Context} from "../App";
+import "./gamePage.css";
 
 function OneVsComp(props) {
   const {
@@ -12,6 +14,8 @@ function OneVsComp(props) {
     initTempBoard,
     reset,
   } = useContext(Context);
+
+  const param = useParams();
 
   useEffect(() => {
     reset();
@@ -204,90 +208,23 @@ function OneVsComp(props) {
     return false;
   }
 
-  function mustToBlock(board) {
-    for (let i = 0; i < board.length; i++) {
-      const tempIndex = [0, 1, 2];
-
-      //   for (let j = 0; j < board[i].length; j++) {
-      for (let j = 0; j < 3; j++) {
-        if (
-          board[i][tempIndex[0]] == board[i][tempIndex[1]] &&
-          board[i][tempIndex[0]] != board[i][tempIndex[2]] &&
-          board[i][tempIndex[0]] != "" &&
-          board[i][tempIndex[0]] != "O" &&
-          board[i][tempIndex[2]] == ""
-        ) {
-          return [i, tempIndex[2]];
+  function mustToBlock(theBoard) {
+    for (let i = 0; i < theBoard.length; i++) {
+      for (let j = 0; j < theBoard[i].length; j++) {
+        //   for (let j = 0; j < 3; j++) {
+        if (findTheOtherBlockInLine(theBoard, i, j, "", "X", "X", true)) {
+          return [i, j];
         }
-        if (
-          board[tempIndex[0]][i] == board[tempIndex[1]][i] &&
-          board[tempIndex[0]][i] != board[tempIndex[2]][i] &&
-          board[tempIndex[0]][i] != "" &&
-          board[tempIndex[0]][i] != "O" &&
-          board[tempIndex[2]][i] == ""
-        ) {
-          return [tempIndex[2], i];
+        if (findTheOtherBlockInLine(theBoard, i, j, "", "X", "X", false)) {
+          return [i, j];
         }
-
-        const temp = tempIndex.pop();
-        tempIndex.unshift(temp);
+        if (findTheOtherBlockInSlant(theBoard, i, j, "", "X", "X", true)) {
+          return [i, j];
+        }
+        if (findTheOtherBlockInSlant(theBoard, i, j, "", "X", "X", false)) {
+          return [i, j];
+        }
       }
-
-      if (
-        board[0][2] == board[1][1] &&
-        board[0][2] != board[2][0] &&
-        board[0][2] != "" &&
-        board[0][2] != "O" &&
-        board[2][0] == ""
-      ) {
-        return [2, 0];
-      }
-      if (
-        board[2][0] == board[1][1] &&
-        board[2][0] != board[0][2] &&
-        board[2][0] != "" &&
-        board[2][0] != "O" &&
-        board[0][2] == ""
-      ) {
-        return [0, 2];
-      }
-      if (
-        board[2][0] == board[0][2] &&
-        board[2][0] != board[1][1] &&
-        board[2][0] != "" &&
-        board[2][0] != "O" &&
-        board[1][1] == ""
-      ) {
-        return [1, 1];
-      }
-    }
-
-    if (
-      board[2][2] == board[1][1] &&
-      board[2][2] != board[0][0] &&
-      board[2][2] != "" &&
-      board[2][2] != "O" &&
-      board[0][0] == ""
-    ) {
-      return [0, 0];
-    }
-    if (
-      board[0][0] == board[1][1] &&
-      board[0][0] != board[2][2] &&
-      board[0][0] != "" &&
-      board[0][0] != "O" &&
-      board[2][2] == ""
-    ) {
-      return [2, 2];
-    }
-    if (
-      board[0][0] == board[2][2] &&
-      board[0][0] != board[1][1] &&
-      board[2][2] != "" &&
-      board[2][2] != "O" &&
-      board[1][1] == ""
-    ) {
-      return [1, 1];
     }
 
     return false;
@@ -298,60 +235,50 @@ function OneVsComp(props) {
 
     for (let i = 0; i < theBoard.length; i++) {
       for (let j = 0; j < theBoard[i].length; j++) {
-        bestLocationByScore[i][j] = 0;
+        bestLocationByScore[i][j] = -1;
+
+        if (theBoard[i][j] == "") bestLocationByScore[i][j]++;
 
         if (findTheOtherBlockInLine(theBoard, i, j, "", "", "", true)) {
-          bestLocationByScore[i][j]++;
-          //   console.log(1);
+          bestLocationByScore[i][j] += 1000;
         }
         if (findTheOtherBlockInLine(theBoard, i, j, "", "", "", false)) {
-          bestLocationByScore[i][j]++;
-          //   console.log(2);
+          bestLocationByScore[i][j] += 1000;
         }
 
         if (findTheOtherBlockInLine(theBoard, i, j, "", "", "O", true)) {
-          bestLocationByScore[i][j] += 50;
-          //   console.log(3);
+          bestLocationByScore[i][j] += 10000;
         }
         if (findTheOtherBlockInLine(theBoard, i, j, "", "", "O", false)) {
-          bestLocationByScore[i][j] += 50;
-          //   console.log(4);
+          bestLocationByScore[i][j] += 10000;
         }
 
         if (findTheOtherBlockInLine(theBoard, i, j, "", "O", "O", true)) {
-          bestLocationByScore[i][j] += 1000;
-          //   console.log(5);
+          bestLocationByScore[i][j] += 100000;
         }
         if (findTheOtherBlockInLine(theBoard, i, j, "", "O", "O", false)) {
-          bestLocationByScore[i][j] += 1000;
-          //   console.log(6);
+          bestLocationByScore[i][j] += 100000;
         }
 
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "", "", true)) {
-          bestLocationByScore[i][j]++;
-          //   console.log(7);
+          bestLocationByScore[i][j] += 1000;
         }
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "", "", false)) {
-          bestLocationByScore[i][j]++;
-          //   console.log(8);
+          bestLocationByScore[i][j] += 1000;
         }
 
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "", "O", true)) {
-          bestLocationByScore[i][j] += 50;
-          //   console.log(9);
+          bestLocationByScore[i][j] += 10000;
         }
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "", "O", false)) {
-          bestLocationByScore[i][j] += 50;
-          //   console.log(10);
+          bestLocationByScore[i][j] += 10000;
         }
 
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "O", "O", true)) {
-          bestLocationByScore[i][j] += 1000;
-          //   console.log(11);
+          bestLocationByScore[i][j] += 100000;
         }
         if (findTheOtherBlockInSlant(theBoard, i, j, "", "O", "O", false)) {
-          bestLocationByScore[i][j] += 1000;
-          //   console.log(12);
+          bestLocationByScore[i][j] += 100000;
         }
       }
     }
@@ -359,58 +286,110 @@ function OneVsComp(props) {
     return bestLocationByScore;
   }
 
+  function userTurn(tempBoard, index_row, index_block) {
+    tempBoard[index_row][index_block] = "X";
+  }
+
   function computerTurn(tempBoard) {
     const scoreMappedArray = bestLocationChack(tempBoard);
     const bestScoreLocation = [0, -1, -1];
+    const draft = [-1, -1, -1];
 
     for (let i = 0; i < scoreMappedArray.length; i++) {
       for (let j = 0; j < scoreMappedArray[i].length; j++) {
-        if (scoreMappedArray[i][j] > bestScoreLocation[0]) {
-          bestScoreLocation[0] = scoreMappedArray[i][j];
-          bestScoreLocation[1] = i;
-          bestScoreLocation[2] = j;
+        for (let c1 = 0; c1 < scoreMappedArray.length; c1++) {
+          for (let c2 = 0; c2 < scoreMappedArray[c1].length; c2++) {
+            if (scoreMappedArray[c1][c2] > draft[0]) {
+              draft[2] = draft[1];
+              draft[1] = draft[0];
+              draft[0] = scoreMappedArray[c1][c2];
+            }
+          }
+        }
+
+        if (draft[1] < 0) draft[1] = draft[0];
+        if (draft[2] < 0) draft[2] = draft[1];
+
+        console.log(draft);
+
+        if (param.level == "Easy") {
+          if (
+            scoreMappedArray[i][j] >= bestScoreLocation[0] &&
+            scoreMappedArray[i][j] <= draft[2]
+          ) {
+            bestScoreLocation[0] = scoreMappedArray[i][j];
+            bestScoreLocation[1] = i;
+            bestScoreLocation[2] = j;
+          }
+        } else if (param.level == "Medium") {
+          if (
+            scoreMappedArray[i][j] >= bestScoreLocation[0] &&
+            scoreMappedArray[i][j] <= draft[1]
+          ) {
+            bestScoreLocation[0] = scoreMappedArray[i][j];
+            bestScoreLocation[1] = i;
+            bestScoreLocation[2] = j;
+          }
+        } else if (param.level == "Hard") {
+          if (scoreMappedArray[i][j] >= bestScoreLocation[0]) {
+            bestScoreLocation[0] = scoreMappedArray[i][j];
+            bestScoreLocation[1] = i;
+            bestScoreLocation[2] = j;
+          }
         }
       }
     }
 
-    return bestScoreLocation;
+    console.log(scoreMappedArray);
+
+    if (bestScoreLocation[0] >= 100000) {
+      tempBoard[bestScoreLocation[1]][bestScoreLocation[2]] = "O";
+    } else if (mustToBlock(tempBoard)) {
+      const tempMustToBlock = mustToBlock(tempBoard);
+      tempBoard[tempMustToBlock[0]][tempMustToBlock[1]] = "O";
+    } else if (bestScoreLocation[1] > -1 && bestScoreLocation[2] > -1) {
+      tempBoard[bestScoreLocation[1]][bestScoreLocation[2]] = "O";
+    } else {
+      console.log("tie");
+    }
+    return tempBoard;
   }
 
   function setBlock(index_row, index_block) {
-    const tempBoard = initTempBoard(board);
-    let tempCurrentPlayer = theCurrentPlayer;
+    let tempBoard = initTempBoard(board);
+    let tempCurrentPlayer = "X";
+    console.log(tempBoard);
 
     if (tempBoard[index_row][index_block] == "") {
-      tempBoard[index_row][index_block] = "X";
-
+      userTurn(tempBoard, index_row, index_block);
+      //   console.log(tempBoard);
       if (isWon(tempBoard)) alert(tempCurrentPlayer + " won");
-      
-      tempCurrentPlayer = "O"
+      else tempCurrentPlayer = "O";
 
-      console.log(bestLocationChack(tempBoard));
-      const bestLocationArray = computerTurn(tempBoard);
-
-      if (bestLocationArray[0] >= 1000) {
-        tempBoard[bestLocationArray[1]][bestLocationArray[2]] = "O";
-      } else if (mustToBlock(tempBoard)) {
-        console.log(bestLocationChack(tempBoard));
-        const tempMustToBlock = mustToBlock(tempBoard);
-        tempBoard[tempMustToBlock[0]][tempMustToBlock[1]] = "O";
-      } else if (bestLocationArray[1] > -1 && bestLocationArray[2] > -1) {
-        tempBoard[bestLocationArray[1]][bestLocationArray[2]] = "O";
-      } else {
-        console.log("tie");
+      if (tempCurrentPlayer == "O") {
+        computerTurn(tempBoard);
+        // console.log(tempBoard);
+        if (isWon(tempBoard)) alert(tempCurrentPlayer + " won");
+        else tempCurrentPlayer = "X";
       }
     }
     setBoard(tempBoard);
-
-    if (isWon(tempBoard)) alert(tempCurrentPlayer + " won");
-
-    tempCurrentPlayer = "X";
   }
 
   return (
-    <div>
+    <div className="main-gamePage" >
+      <div className="upperSection-gamePage">
+        <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
+          {" "}
+          <div className="homeButton-gamePage"> Go Back To Home </div>{" "}
+        </NavLink>
+      </div>
+
+      <p className="HeadLine-gamePage">
+        {" "}
+        <strong> 1 vs Computer </strong>{" "}
+      </p>
+
       <div id="board">
         {board.map((row, index_row) => (
           <div key={index_row} className="rows" id={`row${index_row}`}>
@@ -423,9 +402,7 @@ function OneVsComp(props) {
                 {" "}
                 <p> {item}</p>
                 {"   "}
-                <p>
-                  {index_row},{index_block}
-                </p>
+                <p>{/* {index_row},{index_block} */}</p>
               </div>
             ))}
           </div>

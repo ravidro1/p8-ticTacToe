@@ -10,6 +10,10 @@ function Data(props) {
 
     const [theCurrentPlayer, setTheCurrentPlayer] = useState("X");
     const [board, setBoard] = useState(pattern);
+    const [userClickOnVsComp, setUserClickOnVsComp] = useState(false);
+    
+    const [movesCounter, setMovesCounter] = useState(0);
+
   
     function isWon(tempBoard) {
   
@@ -47,10 +51,13 @@ function Data(props) {
   function reset(){
     setBoard(pattern);
     setTheCurrentPlayer("X");
+    setUserClickOnVsComp(false);
+    
+    setMovesCounter(0);
 }
 
     return {
-        theCurrentPlayer, setTheCurrentPlayer,board, setBoard, changePlayer, isWon, initTempBoard, reset
+        theCurrentPlayer, setTheCurrentPlayer,board, setBoard, changePlayer, isWon, initTempBoard, reset, userClickOnVsComp, setUserClickOnVsComp
     }
 }
 

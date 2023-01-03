@@ -5,6 +5,7 @@ import OneVsComp from "./Pages/OneVsComp";
 import OneVsOne from "./Pages/OneVsOne";
 import { createContext } from "react";
 import Data from "./Data";
+import ScoreTabel from "./Pages/ScoreTabel"
 
 export const Context = createContext();
 
@@ -19,7 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/OneVsOne" element={<OneVsOne></OneVsOne>}></Route>
-        <Route path="/OneVsComp" element={<OneVsComp></OneVsComp>}></Route>
+        <Route path="/OneVsComp/:level" element={<OneVsComp></OneVsComp>}></Route>
+        <Route path="/ScoreBoard" element={<ScoreTabel></ScoreTabel>}></Route>
       </Routes>
     </div>
     </Context.Provider>

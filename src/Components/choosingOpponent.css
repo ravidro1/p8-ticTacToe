@@ -1,55 +1,37 @@
-.main-homePage {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(10, 162, 209);
-
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-direction: column;
-}
-
-#homePage-headLine {
-  font-size: 5vw;
-  color: white;
-  /* font-family: Roboto Mono; */
-  font-family: "Roboto Mono", monospace;
-}
-
-.links-div-homePage {
-  height: 26vw;
-  max-height: 26vw;
+.links-div-choosingOpponent-Page {
+  height: 34vw;
+  max-height: 34vw;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-
 }
 
-.gamesButton {
+.gamesButtons-choosingOpponent-Page {
   width: 20vw;
-  height: 7vw;
+  height: 6vw;
+  /* height: 100%/4; */
+
   font-size: 2.5vw;
   border: 0.2vw solid black;
   border-radius: 1vw;
   background-color: rgb(31, 137, 169);
   font-family: "Roboto Mono", monospace;
+  /* margin-bottom: 1vw; */
 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   color: white;
-
 }
 
-.gamesLink {
+.gamesLink-choosingOpponent-Page {
   text-decoration: none;
 }
 
-.gamesButton:hover {
+.gamesButtons-choosingOpponent-Page:hover {
   background-color: rgb(35, 178, 217);
   border: 0.3vw solid black;
 }
