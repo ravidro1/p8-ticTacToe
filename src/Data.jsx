@@ -1,5 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+
+const LOCAL_DATA = "data";
 
 function Data(props) {
   const pattern = [
@@ -8,12 +10,34 @@ function Data(props) {
     ["", "", ""],
   ];
 
+  const [isReset, setIsreset] = useState(false);
+
+  const [tabelScoreData, setTabelScoreData] = useState([]);
+
+  useEffect(() => {
+
+
+    const tempLoaclData = localStorage.getItem(LOCAL_DATA);
+
+    if(tempLoaclData){
+      setTabelScoreData(JSON.parse(tempLoaclData));
+    }
+  }, [])
+
+  useEffect(() => {
+
+    if(tabelScoreData.length || isReset){
+      localStorage.setItem(LOCAL_DATA, JSON.stringify(tabelScoreData));
+      setIsreset(false);
+    }
+
+  }, [tabelScoreData])
+
   const navigate = useNavigate();
 
   const [userClickOnVsComp, setUserClickOnVsComp] = useState(false);
 
   const [board, setBoard] = useState(pattern);
-
 
   const [currentGameData, setCurrentGameData] = useState({
     level: "",
@@ -21,9 +45,10 @@ function Data(props) {
     winner: "",
     player1: "",
     player2: "",
+    time: "",
   });
 
-  const [tabelScoreData, setTabelScoreData] = useState([]);
+
 
   function isWon(tempBoard) {
     for (let i = 0; i < tempBoard.length; i++) {
@@ -59,12 +84,12 @@ function Data(props) {
 
   function changePlayer(currentPlayer) {
     let tempCurrentPlayer = null;
-    
-    currentPlayer == "X"
-      ? tempCurrentPlayer = "O"
-      : tempCurrentPlayer = "X";
 
-      return tempCurrentPlayer;
+    currentPlayer == "X"
+      ? (tempCurrentPlayer = "O")
+      : (tempCurrentPlayer = "X");
+
+    return tempCurrentPlayer;
   }
 
   function initTempBoard(board) {
@@ -77,6 +102,15 @@ function Data(props) {
     return tempBoard;
   }
 
+  function theBoardIsFull(theBoard) {
+    for (let i = 0; i < theBoard.length; i++) {
+      for (let j = 0; j < theBoard.length; j++) {
+        if (theBoard[i][j] == "") return false;
+      }
+    }
+    return true;
+  }
+
   function reset() {
     setBoard(pattern);
     setUserClickOnVsComp(false);
@@ -87,11 +121,16 @@ function Data(props) {
       winner: "",
       player1: "",
       player2: "",
+      time: "",
     });
   }
 
   function gameOver(movesCounter, winner) {
-    setCurrentGameData({...currentGameData, movesCounter: movesCounter, winner: winner});
+    setCurrentGameData({
+      ...currentGameData,
+      movesCounter: movesCounter,
+      winner: winner,
+    });
     navigate("/GameOver");
   }
 
@@ -116,7 +155,12 @@ function Data(props) {
     currentGameData,
     setCurrentGameData,
     changePlayer,
+    navigate,
+    theBoardIsFull,
 
+    tabelScoreData,
+    setTabelScoreData,
+    setIsreset
   };
 }
 

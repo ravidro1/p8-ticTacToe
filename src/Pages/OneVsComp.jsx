@@ -18,6 +18,7 @@ function OneVsComp(props) {
     goToDefaultPage,
     currentGameData,
     setCurrentGameData,
+    theBoardIsFull,
   } = useContext(Context);
 
   const param = useParams();
@@ -61,26 +62,8 @@ function OneVsComp(props) {
       twoOtherBlockLocationArray[1] = 1;
     }
 
-    if (index_row == 0 && index_coulom == 1) {
-      // console.log(index);
-      // console.log(twoOtherBlockLocationArray);
-    }
-
-    // if(index_row == 0 && index_coulom == 1){
-    //     console.log(twoOtherBlockLocationArray);
-    // }
-
-    //  ||theBoard[index_row][twoOtherBlockLocationArray[0]] == theBoard[index_row][twoOtherBlockLocationArray[1]] &&  theBoard[index_row][twoOtherBlockLocationArray[1]] == firstOtherBlocksContent ||
-    // theBoard[index_row][twoOtherBlockLocationArray[0]] == theBoard[index_row][twoOtherBlockLocationArray[1]] &&  theBoard[index_row][twoOtherBlockLocationArray[1]] == secondOtherBlocksContent
-
     if (theBoard[index_row][index_coulom] == thisBlockContent) {
       if (!isRow) {
-        if (index_row == 0 && index_coulom == 1) {
-          //   console.log("[" + firstOtherBlocksContent + "]   " + "[" + secondOtherBlocksContent + "]   " + index_coulom + "  " + isRow + "  " + index, twoOtherBlockLocationArray);
-          // console.log(theBoard[twoOtherBlockLocationArray[0][index_coulom]]);
-          // console.log(theBoard[twoOtherBlockLocationArray[0]][index_coulom]);
-        }
-
         if (
           (theBoard[twoOtherBlockLocationArray[0]][index_coulom] ==
             firstOtherBlocksContent &&
@@ -95,12 +78,6 @@ function OneVsComp(props) {
             theBoard[twoOtherBlockLocationArray[0]][index_coulom] ==
               firstOtherBlocksContent &&
             firstOtherBlocksContent == secondOtherBlocksContent)
-
-          //       ||
-          //   (theBoard[twoOtherBlockLocationArray[1][index_coulom]] ==
-          //     secondOtherBlocksContent &&
-          //     theBoard[twoOtherBlockLocationArray[0][index_coulom]] ==
-          //       secondOtherBlocksContent)
         ) {
           return true;
         }
@@ -119,11 +96,6 @@ function OneVsComp(props) {
             theBoard[index_row][twoOtherBlockLocationArray[1]] ==
               firstOtherBlocksContent &&
             firstOtherBlocksContent == secondOtherBlocksContent)
-          //        ||
-          //   (theBoard[index_row][twoOtherBlockLocationArray[1]] ==
-          //     secondOtherBlocksContent &&
-          //     theBoard[index_row][twoOtherBlockLocationArray[0]] ==
-          //       secondOtherBlocksContent)
         ) {
           return true;
         }
@@ -207,14 +179,6 @@ function OneVsComp(props) {
             twoOtherBlockLocationArray[3]
           ] == secondOtherBlocksContent &&
           firstOtherBlocksContent == secondOtherBlocksContent)
-
-        //   ||
-        // (theBoard[twoOtherBlockLocationArray[0]][
-        //   twoOtherBlockLocationArray[1]
-        // ] == firstOtherBlocksContent &&
-        //   theBoard[twoOtherBlockLocationArray[2]][
-        //     twoOtherBlockLocationArray[3]
-        //   ] == firstOtherBlocksContent)
       ) {
         return true;
       }
@@ -225,7 +189,6 @@ function OneVsComp(props) {
   function mustToBlock(theBoard) {
     for (let i = 0; i < theBoard.length; i++) {
       for (let j = 0; j < theBoard[i].length; j++) {
-        //   for (let j = 0; j < 3; j++) {
         if (findTheOtherBlockInLine(theBoard, i, j, "", "X", "X", true)) {
           return [i, j];
         }
@@ -309,24 +272,32 @@ function OneVsComp(props) {
     const bestScoreLocation = [0, -1, -1];
     const draft = [-1, -1, -1];
 
+    for (let c1 = 0; c1 < scoreMappedArray.length; c1++) {
+      for (let c2 = 0; c2 < scoreMappedArray[c1].length; c2++) {
+        if (scoreMappedArray[c1][c2] > draft[0]) {
+          draft[2] = draft[1];
+          draft[1] = draft[0];
+          draft[0] = scoreMappedArray[c1][c2];
+
+          console.log(draft);
+        }
+      }
+    }
+
+    if (draft[1] < 0) draft[1] = draft[0];
+    if (draft[2] < 0) draft[2] = draft[1];
+
+    console.log(draft);
+
+    console.log(scoreMappedArray);
     for (let i = 0; i < scoreMappedArray.length; i++) {
       for (let j = 0; j < scoreMappedArray[i].length; j++) {
-        for (let c1 = 0; c1 < scoreMappedArray.length; c1++) {
-          for (let c2 = 0; c2 < scoreMappedArray[c1].length; c2++) {
-            if (scoreMappedArray[c1][c2] > draft[0]) {
-              draft[2] = draft[1];
-              draft[1] = draft[0];
-              draft[0] = scoreMappedArray[c1][c2];
-            }
-          }
-        }
-
-        if (draft[1] < 0) draft[1] = draft[0];
-        if (draft[2] < 0) draft[2] = draft[1];
-
-        console.log(draft);
-
-        if (param.level == "Easy") {
+        
+        if (scoreMappedArray[i][j] >= 100000) {
+          bestScoreLocation[0] = scoreMappedArray[i][j];
+          bestScoreLocation[1] = i;
+          bestScoreLocation[2] = j;
+        } else if (param.level == "Easy") {
           if (
             scoreMappedArray[i][j] >= bestScoreLocation[0] &&
             scoreMappedArray[i][j] <= draft[2]
@@ -364,7 +335,7 @@ function OneVsComp(props) {
     } else if (bestScoreLocation[1] > -1 && bestScoreLocation[2] > -1) {
       tempBoard[bestScoreLocation[1]][bestScoreLocation[2]] = "O";
     } else {
-      console.log("tie");
+      console.log("Tie");
     }
     return tempBoard;
   }
@@ -384,8 +355,8 @@ function OneVsComp(props) {
 
         if (isWon(tempBoard)) {
           gameOver(movesCounter, "O");
-        } else {
-          // changePlayer();
+        } else if (theBoardIsFull(tempBoard)) {
+          gameOver("this is tie", "Tie");
         }
         setBoard(tempBoard);
       }
@@ -399,7 +370,10 @@ function OneVsComp(props) {
       <div className="upperSection-gamePage">
         <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
           {" "}
-          <div className="homeButton-gamePage"> Go Back To Home </div>{" "}
+          <div className="homeButton-gamePage gamePage-buttons">
+            {" "}
+            Go Back To Home{" "}
+          </div>{" "}
         </NavLink>
       </div>
 

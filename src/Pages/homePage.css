@@ -18,14 +18,20 @@
 }
 
 .links-div-homePage {
-  height: 26vw;
-  max-height: 26vw;
+  /* height: 26vw;
+  max-height: 26vw; */
+  height: auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+}
 
+.buttonArea-homePage{
+  height: 9vw;
+  display: flex;
+  align-items: center;
 }
 
 .gamesButton {
@@ -42,7 +48,6 @@
   justify-content: center;
   flex-direction: column;
   color: white;
-
 }
 
 .gamesLink {

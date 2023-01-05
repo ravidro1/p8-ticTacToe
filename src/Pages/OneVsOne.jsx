@@ -17,6 +17,7 @@ function OneVsOne(props) {
     currentGameData,
     setCurrentGameData,
     changePlayer,
+    theBoardIsFull,
   } = useContext(Context);
 
   ///////////////// reset and init all data ///////////////////////
@@ -40,6 +41,8 @@ function OneVsOne(props) {
 
       if (isWon(tempBoard)) {
         gameOver(movesCounter, currentPlayer);
+      } else if (theBoardIsFull(tempBoard)) {
+        gameOver("this is tie", "Tie");
       } else {
         currentPlayer = changePlayer(currentPlayer);
       }
@@ -47,23 +50,19 @@ function OneVsOne(props) {
       alert("this block is already taken");
     }
 
-    console.log(currentGameData);
-    console.log(movesCounter);
+    // console.log(currentGameData);
+    // console.log(movesCounter);
   }
-
-  //////////////////////////////////////////////
-  // put turn own
-  // put move display
-  //////////////////////////////////////////////
 
   return (
     <div className="main-gamePage">
       <div className="upperSection-gamePage">
+        
         <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
-          <div className="homeButton-gamePage"> Go Back To Home </div>
+          <div className="homeButton-gamePage gamePage-buttons"> Go Back To Home </div>
         </NavLink>
 
-        <div className="countMoveShow-gamePage">
+        <div className="countMoveShow-gamePage gamePage-buttons">
           {" "}
           Turn is of {currentPlayer}{" "}
         </div>

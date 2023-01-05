@@ -1,10 +1,21 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../App";
 import "./gameOverPage.css";
 import {useForm} from "react-hook-form";
+import {NavLink} from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 function GameOverPage(props) {
-  const {board, currentGameData, setCurrentGameData} = useContext(Context);
+  const {
+    currentGameData,
+    setCurrentGameData,
+    navigate,
+    tabelScoreData,
+    setTabelScoreData,
+  } = useContext(Context);
+
+  const [isThePlayerUpdate, setIsThePlayerUpdate] = useState(false);
 
   const {
     reset,
@@ -13,56 +24,108 @@ function GameOverPage(props) {
     formState: {errors},
   } = useForm();
 
-  function onSubmit(data) {
-    setCurrentGameData({
+  useEffect(() => {
+    async function initTime() {
+      const tempDate = new Date();
+      const time =
+        tempDate.getDate() +
+        "." +
+        (tempDate.getMonth() + 1) +
+        "." +
+        tempDate.getFullYear() +
+        " - " +
+        tempDate.getHours() +
+        ":" +
+        tempDate.getMinutes();
+      await setCurrentGameData({...currentGameData, time: time});
+    }
+
+    initTime();
+  }, []);
+
+  function playersNameLoad(data) {
+    // setCurrentGameData({
+    //   ...currentGameData,
+    //   player1: data.player1,
+    //   player2: data.player2,
+    // });
+
+    const tempCurrentGameData = {
       ...currentGameData,
       player1: data.player1,
       player2: data.player2,
-    });
-    reset();
-  }
+    };
 
-  ////////////////////////////////////
-  // date and time
-  // inputs
-  // name
+    setTabelScoreData([tempCurrentGameData, ...tabelScoreData]);
+    reset();
+    navigate("/ScoreBoard");
+  }
 
   return (
     <div className="main-gameOver-Page">
-      {console.log(currentGameData)}
-      <p>Game Over Page</p>
-      <p> {currentGameData.winner} won </p>
-      <p> game level: {currentGameData.level}</p>
-      <p> number of move: {currentGameData.movesCounter} </p>
+      <div className="upperSection-gameOver-Page">
+        <NavLink className={"homeButtonLink-gameOver-Page"} to={"/"}>
+          <div className="homeButton-gameOver-Page"> Go Back To Home </div>
+        </NavLink>
+      </div>
 
-      {currentGameData.player1 && <p> player1: {currentGameData.player1} </p>}
-      {currentGameData.player2 && <p> player2: {currentGameData.player2} </p>}
+      <div className="HeadLine-gameOver-Page"> Game Over Page </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          placeholder="Player 1 (X)"
-          type="text"
-          {...register("player1")}
-        />
-        {/* { &&  value={currentGameData.player2}} */}
+      <div className="dataShow-gameOver-Page">
+        Winner: {currentGameData?.winner}
+      </div>
+      <div className="dataShow-gameOver-Page">
+        {" "}
+        Game Level: {currentGameData?.level}{" "}
+      </div>
+      <div className="dataShow-gameOver-Page">
+        {" "}
+        Time: {currentGameData?.time}{" "}
+      </div>
+      <div className="dataShow-gameOver-Page">
+        {" "}
+        Number Of Move: {currentGameData?.movesCounter}{" "}
+      </div>
+
+      <form onSubmit={handleSubmit(playersNameLoad)}>
+        <TextField
+          //   id="1"
+          className="textField-gameOver-Page"
+          label="Player 1 (X)"
+          variant="filled"
+          {...register("player1", {required: true})}
+        ></TextField>
+
+        {/* <input type="submit" /> */}
+        <Button
+          type="submit"
+          className="button-gameOver-Page"
+          variant="contained"
+        >
+          {" "}
+          Press For Add{" "}
+        </Button>
 
         {currentGameData.level == "OneVsOne" && (
-          <input
-            placeholder="Player 2 (O)"
-            type="text"
-            {...register("player2")}
-          />
+          <TextField
+            className="textField-gameOver-Page"
+            id="2"
+            label="Player 2 (O)"
+            variant="filled"
+            {...register("player2", {required: true})}
+          ></TextField>
         )}
 
         {currentGameData.level != "OneVsOne" && (
-          <input
+          <TextField
+            className="textField-gameOver-Page"
+            id="2"
+            variant="filled"
+            disabled
             value={"Computer (O)"}
-            placeholder="Computer (O)"
-            type="text"
-            {...register("player2")}
-          />
+            {...register("player2", {value: "Computer (O)"})}
+          ></TextField>
         )}
-        <input type="submit" />
       </form>
     </div>
   );
