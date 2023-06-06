@@ -13,8 +13,7 @@
 .upperSection-gameOver-Page {
   display: flex;
   width: 100%;
-  height: 5vw;
-  max-height: 5vw;
+  height: fit-content;
   justify-content: space-between;
 }
 
@@ -27,7 +26,6 @@
   font-size: 6.5vw;
   margin: 0;
   color: white;
-  font-family: "Roboto Mono", monospace;
 }
 
 .homeButton-gameOver-Page {
@@ -37,7 +35,6 @@
   border: 0.2vw solid black;
   border-radius: 1vw;
   background-color: rgb(31, 137, 169);
-  font-family: "Roboto Mono", monospace;
 
   display: flex;
   align-items: center;
@@ -55,16 +52,33 @@
   font-size: 3.5vw;
   margin: 0;
   color: white;
-  font-family: "Roboto Mono", monospace;
+}
+
+.form-gameOver-Page {
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
 }
 
 .textField-gameOver-Page {
-    border: 0.2vw solid black !important;
-    border-radius: 1vw !important;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  width: 27%;
+  height: 60px;
+  padding: 12px;
 }
 
-.button-gameOver-Page{
-    height: 100%;
-    margin-left: 2vw !important;
-    margin-right: 2vw !important;
+.button-gameOver-Page {
+  height: 100%;
+  width: 27%;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(31, 137, 169);
+
+  font-size: 1.8vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
 }

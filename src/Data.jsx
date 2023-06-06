@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LOCAL_DATA = "data";
 
@@ -10,28 +10,24 @@ function Data(props) {
     ["", "", ""],
   ];
 
-  const [isReset, setIsreset] = useState(false);
+  const [isReset, setIsReset] = useState(false);
 
-  const [tabelScoreData, setTabelScoreData] = useState([]);
+  const [TableScoreData, setTableScoreData] = useState([]);
 
   useEffect(() => {
-
-
     const tempLoaclData = localStorage.getItem(LOCAL_DATA);
 
-    if(tempLoaclData){
-      setTabelScoreData(JSON.parse(tempLoaclData));
+    if (tempLoaclData) {
+      setTableScoreData(JSON.parse(tempLoaclData));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-
-    if(tabelScoreData.length || isReset){
-      localStorage.setItem(LOCAL_DATA, JSON.stringify(tabelScoreData));
-      setIsreset(false);
+    if (TableScoreData.length || isReset) {
+      localStorage.setItem(LOCAL_DATA, JSON.stringify(TableScoreData));
+      setIsReset(false);
     }
-
-  }, [tabelScoreData])
+  }, [TableScoreData]);
 
   const navigate = useNavigate();
 
@@ -47,8 +43,6 @@ function Data(props) {
     player2: "",
     time: "",
   });
-
-
 
   function isWon(tempBoard) {
     for (let i = 0; i < tempBoard.length; i++) {
@@ -158,9 +152,9 @@ function Data(props) {
     navigate,
     theBoardIsFull,
 
-    tabelScoreData,
-    setTabelScoreData,
-    setIsreset
+    TableScoreData,
+    setTableScoreData,
+    setIsReset,
   };
 }
 

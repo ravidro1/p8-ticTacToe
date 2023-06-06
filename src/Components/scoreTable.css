@@ -1,0 +1,69 @@
+.table-container-ScoreTable-Component {
+  background-color: rgb(31, 137, 169);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  border-bottom: 4px solid rgb(16, 69, 85);
+}
+
+.main-ScoreTable-Component {
+  overflow: hidden;
+
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 100%;
+  color: white;
+}
+
+.main-ScoreTable-Component thead tr {
+  background-color: rgb(16, 69, 85);
+  text-align: left;
+  font-weight: bold;
+}
+
+.main-ScoreTable-Component th,
+.main-ScoreTable-Component td {
+  padding: 12px 8px;
+}
+
+.main-ScoreTable-Component tbody {
+  overflow: auto;
+}
+
+.main-ScoreTable-Component tbody tr:hover {
+  background-color: rgba(11, 161, 207, 0.584);
+}
+
+.titles-ScoreTable-Component {
+  font-size: 2vw;
+}
+
+.titles-content-div-ScoreTable-Component {
+  display: flex;
+  align-items: center;
+}
+
+.titles-content-p-ScoreTable-Component {
+  margin: 0;
+  padding-right: 15px;
+  border-right: 1px solid #dddddd;
+}
+
+.body-row-ScoreTable-Component {
+  height: fit-content;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+  font-size: 1.75vw;
+}
+
+.body-row-ScoreTable-Component:nth-of-type(even) {
+  background-color: rgb(19, 103, 129);
+}
+
+.body-row-ScoreTable-Component:last-of-type {
+  border: none;
+}

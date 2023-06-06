@@ -1,85 +1,90 @@
-#board{
+#board {
+  width: 30vw;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  border: 0.5vw solid black;
+  background-color: azure;
+}
+
+.block {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 12vw;
+}
+
+.rows {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.main-gamePage {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(10, 162, 209);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.upperSection-gamePage {
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.HeadLine-gamePage {
+  font-size: 6.5vw;
+  margin: 0;
+  color: white;
+  font-family: "Roboto Mono", monospace;
+}
+
+.homeButton-gamePage:hover {
+  background-color: rgb(35, 178, 217);
+  border: 3px solid black;
+}
+
+.gamePage-buttons {
+  font-size: 2.5vh;
+  height: 8vh;
+  width: 22vw;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(31, 137, 169);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  margin-inline: 2vw;
+}
+
+@media screen and (max-width: 1280px) {
+  .gamePage-buttons {
+    height: 8vh;
     width: 30vw;
-    height: 30vw;
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    border: 0.5vw solid black;
-    background-color: azure;
+  }
+
+  #board {
+    width: 50vw;
+  }
 }
 
-.block{
-    border: 0.1vw solid black;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    font-size: 3vw;
-}
+@media screen and (max-width: 768px) {
+  .gamePage-buttons {
+    height: 8vh;
+    width: 45vw;
+  }
 
-
-
-.rows{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.main-gamePage{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(10, 162, 209);;
-    
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-}
-
-
-.upperSection-gamePage{
-    display: flex;
-    width: 100%;
-    height: 5vw;
-    max-height: 5vw;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1vw;
-}
-
-.homeButtonLink-gamePage{
-    text-decoration: none;
-    /* align-self: flex-start; */
-    margin-left: 2vw;
-}
-
-.HeadLine-gamePage{
-    font-size: 6.5vw;
-    margin: 0;
-    color: white;
-    font-family: "Roboto Mono", monospace;
-}
-
-
-
-.homeButton-gamePage:hover{
-    background-color: rgb(35, 178, 217);
-    border: 0.3vw solid black;
-}
-
-.countMoveShow-gamePage{
-    margin-right: 2vw;
-}
-
-.gamePage-buttons{
-    font-size: 2vw;
-    height: 4vw;
-    width: 22vw;
-    border: 0.2vw solid black;
-    border-radius: 1vw;
-    background-color: rgb(31, 137, 169);
-    font-family: "Roboto Mono", monospace;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: white;
+  #board {
+    width: 60vw;
+  }
 }

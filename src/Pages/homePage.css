@@ -5,7 +5,7 @@
   background-color: rgb(10, 162, 209);
 
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   flex-direction: column;
 }
@@ -13,14 +13,12 @@
 #homePage-headLine {
   font-size: 5vw;
   color: white;
-  /* font-family: Roboto Mono; */
   font-family: "Roboto Mono", monospace;
 }
 
 .links-div-homePage {
-  /* height: 26vw;
-  max-height: 26vw; */
-  height: auto;
+  height: 50vh;
+  width: 100%;
 
   display: flex;
   align-items: center;
@@ -28,15 +26,9 @@
   flex-direction: column;
 }
 
-.buttonArea-homePage{
-  height: 9vw;
-  display: flex;
-  align-items: center;
-}
-
 .gamesButton {
-  width: 20vw;
-  height: 7vw;
+  width: 60%;
+  height: 25%;
   font-size: 2.5vw;
   border: 0.2vw solid black;
   border-radius: 1vw;
@@ -50,11 +42,19 @@
   color: white;
 }
 
-.gamesLink {
-  text-decoration: none;
-}
-
 .gamesButton:hover {
   background-color: rgb(35, 178, 217);
   border: 0.3vw solid black;
+}
+
+@media screen and (max-width: 1024px) {
+  #homePage-headLine {
+    font-size: 12vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #homePage-headLine {
+    font-size: 15vw;
+  }
 }

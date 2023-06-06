@@ -1,17 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import "./defaultPage.css"
+import { useNavigate } from "react-router-dom";
+import "./defaultPage.css";
 
 function DefaultPage(props) {
+  const navigate = useNavigate();
+
   return (
     <div className="main-defaultPage">
-      <div className="upperSection-defaultPage">
-        <NavLink className={"homeButtonLink-defaultPage"} to={"/"}>
-          {" "}
-          <div className="homeButton-defaultPage"> Go Back To Home </div>{" "}
-        </NavLink>
-      </div>
-      <h1 className="errorLine-defaultPgae"> 404 The Page Not Found </h1>
+      <h1 className="errorLine-defaultPage"> 404 The Page Not Found </h1>
+      <button
+        onClick={() => navigate("/")}
+        className="homeButton-defaultPage homeButtonLink-defaultPage"
+      >
+        {" "}
+        Go Back To Home{" "}
+      </button>{" "}
     </div>
   );
 }

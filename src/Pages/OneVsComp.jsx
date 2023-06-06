@@ -1,6 +1,6 @@
-import React, {useContext, useEffect} from "react";
-import {NavLink, useParams} from "react-router-dom";
-import {Context} from "../App";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { Context } from "../App";
 import "./gamePage.css";
 
 let movesCounter = 0;
@@ -19,6 +19,8 @@ function OneVsComp(props) {
     currentGameData,
     setCurrentGameData,
     theBoardIsFull,
+
+    navigate,
   } = useContext(Context);
 
   const param = useParams();
@@ -33,13 +35,13 @@ function OneVsComp(props) {
     ) {
       goToDefaultPage();
     }
-    setCurrentGameData({...currentGameData, level: param.level});
+    setCurrentGameData({ ...currentGameData, level: param.level });
   }, []);
 
   function findTheOtherBlockInLine(
     theBoard,
     index_row,
-    index_coulom,
+    index_column,
     thisBlockContent,
     firstOtherBlocksContent,
     secondOtherBlocksContent,
@@ -47,7 +49,7 @@ function OneVsComp(props) {
   ) {
     const twoOtherBlockLocationArray = [];
 
-    const index = isRow ? index_coulom : index_row;
+    const index = isRow ? index_column : index_row;
 
     if (index == 0) {
       twoOtherBlockLocationArray[0] = 1;
@@ -62,20 +64,20 @@ function OneVsComp(props) {
       twoOtherBlockLocationArray[1] = 1;
     }
 
-    if (theBoard[index_row][index_coulom] == thisBlockContent) {
+    if (theBoard[index_row][index_column] == thisBlockContent) {
       if (!isRow) {
         if (
-          (theBoard[twoOtherBlockLocationArray[0]][index_coulom] ==
+          (theBoard[twoOtherBlockLocationArray[0]][index_column] ==
             firstOtherBlocksContent &&
-            theBoard[twoOtherBlockLocationArray[1]][index_coulom] ==
+            theBoard[twoOtherBlockLocationArray[1]][index_column] ==
               secondOtherBlocksContent) ||
-          (theBoard[twoOtherBlockLocationArray[1]][index_coulom] ==
+          (theBoard[twoOtherBlockLocationArray[1]][index_column] ==
             firstOtherBlocksContent &&
-            theBoard[twoOtherBlockLocationArray[0]][index_coulom] ==
+            theBoard[twoOtherBlockLocationArray[0]][index_column] ==
               secondOtherBlocksContent) ||
-          (theBoard[twoOtherBlockLocationArray[1]][index_coulom] ==
+          (theBoard[twoOtherBlockLocationArray[1]][index_column] ==
             firstOtherBlocksContent &&
-            theBoard[twoOtherBlockLocationArray[0]][index_coulom] ==
+            theBoard[twoOtherBlockLocationArray[0]][index_column] ==
               firstOtherBlocksContent &&
             firstOtherBlocksContent == secondOtherBlocksContent)
         ) {
@@ -108,27 +110,27 @@ function OneVsComp(props) {
   function findTheOtherBlockInSlant(
     theBoard,
     index_row,
-    index_coulom,
+    index_column,
     thisBlockContent,
     firstOtherBlocksContent,
     secondOtherBlocksContent,
-    isDiractionIsLTR
+    isDirectionIsLTR
   ) {
     const twoOtherBlockLocationArray = [];
 
-    if (isDiractionIsLTR) {
-      if (index_row == index_coulom) {
-        if (index_row == 0 && index_coulom == 0) {
+    if (isDirectionIsLTR) {
+      if (index_row == index_column) {
+        if (index_row == 0 && index_column == 0) {
           twoOtherBlockLocationArray[0] = 1;
           twoOtherBlockLocationArray[1] = 1;
           twoOtherBlockLocationArray[2] = 2;
           twoOtherBlockLocationArray[3] = 2;
-        } else if (index_row == 1 && index_coulom == 1) {
+        } else if (index_row == 1 && index_column == 1) {
           twoOtherBlockLocationArray[0] = 0;
           twoOtherBlockLocationArray[1] = 0;
           twoOtherBlockLocationArray[2] = 2;
           twoOtherBlockLocationArray[3] = 2;
-        } else if (index_row == 2 && index_coulom == 2) {
+        } else if (index_row == 2 && index_column == 2) {
           twoOtherBlockLocationArray[0] = 0;
           twoOtherBlockLocationArray[1] = 0;
           twoOtherBlockLocationArray[2] = 1;
@@ -137,18 +139,18 @@ function OneVsComp(props) {
       } else {
         return false;
       }
-    } else if (!isDiractionIsLTR) {
-      if (index_row == 0 && index_coulom == 2) {
+    } else if (!isDirectionIsLTR) {
+      if (index_row == 0 && index_column == 2) {
         twoOtherBlockLocationArray[0] = 1;
         twoOtherBlockLocationArray[1] = 1;
         twoOtherBlockLocationArray[2] = 2;
         twoOtherBlockLocationArray[3] = 0;
-      } else if (index_row == 1 && index_coulom == 1) {
+      } else if (index_row == 1 && index_column == 1) {
         twoOtherBlockLocationArray[0] = 0;
         twoOtherBlockLocationArray[1] = 2;
         twoOtherBlockLocationArray[2] = 2;
         twoOtherBlockLocationArray[3] = 0;
-      } else if (index_row == 2 && index_coulom == 0) {
+      } else if (index_row == 2 && index_column == 0) {
         twoOtherBlockLocationArray[0] = 1;
         twoOtherBlockLocationArray[1] = 1;
         twoOtherBlockLocationArray[2] = 0;
@@ -158,7 +160,7 @@ function OneVsComp(props) {
       }
     }
 
-    if (theBoard[index_row][index_coulom] == thisBlockContent) {
+    if (theBoard[index_row][index_column] == thisBlockContent) {
       if (
         (theBoard[twoOtherBlockLocationArray[0]][
           twoOtherBlockLocationArray[1]
@@ -207,7 +209,7 @@ function OneVsComp(props) {
     return false;
   }
 
-  function bestLocationChack(theBoard) {
+  function bestLocationCheck(theBoard) {
     const bestLocationByScore = [[], [], []];
 
     for (let i = 0; i < theBoard.length; i++) {
@@ -268,7 +270,7 @@ function OneVsComp(props) {
   }
 
   function computerTurn(tempBoard) {
-    const scoreMappedArray = bestLocationChack(tempBoard);
+    const scoreMappedArray = bestLocationCheck(tempBoard);
     const bestScoreLocation = [0, -1, -1];
     const draft = [-1, -1, -1];
 
@@ -278,8 +280,6 @@ function OneVsComp(props) {
           draft[2] = draft[1];
           draft[1] = draft[0];
           draft[0] = scoreMappedArray[c1][c2];
-
-          console.log(draft);
         }
       }
     }
@@ -287,12 +287,8 @@ function OneVsComp(props) {
     if (draft[1] < 0) draft[1] = draft[0];
     if (draft[2] < 0) draft[2] = draft[1];
 
-    console.log(draft);
-
-    console.log(scoreMappedArray);
     for (let i = 0; i < scoreMappedArray.length; i++) {
       for (let j = 0; j < scoreMappedArray[i].length; j++) {
-        
         if (scoreMappedArray[i][j] >= 100000) {
           bestScoreLocation[0] = scoreMappedArray[i][j];
           bestScoreLocation[1] = i;
@@ -365,16 +361,18 @@ function OneVsComp(props) {
     }
   }
 
+  const [blockHover, setBlockHover] = useState(false);
+
   return (
     <div className="main-gamePage">
       <div className="upperSection-gamePage">
-        <NavLink className={"homeButtonLink-gamePage"} to={"/"}>
-          {" "}
-          <div className="homeButton-gamePage gamePage-buttons">
-            {" "}
-            Go Back To Home{" "}
-          </div>{" "}
-        </NavLink>
+        {" "}
+        <button
+          onClick={() => navigate("/")}
+          className="homeButton-gamePage gamePage-buttons"
+        >
+          Go Back To Home{" "}
+        </button>{" "}
       </div>
 
       <p className="HeadLine-gamePage">
@@ -385,15 +383,32 @@ function OneVsComp(props) {
       <div id="board">
         {board.map((row, index_row) => (
           <div key={index_row} className="rows" id={`row${index_row}`}>
-            {board[index_row].map((item, index_block) => (
-              <div
-                key={index_block}
-                className="block"
-                onClick={() => setBlock(index_row, index_block)}
-              >
-                {item}
-              </div>
-            ))}
+            {board[index_row].map((item, index_block) => {
+              let isHover = false;
+              if (
+                blockHover.index_row == index_row &&
+                blockHover.index_block == index_block
+              )
+                isHover = true;
+              return (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    color: isHover && !item ? "#00000050" : "#000",
+                  }}
+                  onMouseEnter={() => setBlockHover({ index_row, index_block })}
+                  onMouseLeave={() =>
+                    setBlockHover({ index_row: null, index_block: null })
+                  }
+                  key={index_block}
+                  className="block"
+                  onClick={() => setBlock(index_row, index_block)}
+                >
+                  {item ? item : isHover && "X"}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
