@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  font-size: 12vw;
+  font-size: min(10vw, 10vh);
 }
 
 .rows {
@@ -76,6 +76,10 @@
   #board {
     width: 50vw;
   }
+
+  .HeadLine-gamePage {
+    font-size: 9vw;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -86,5 +90,9 @@
 
   #board {
     width: 60vw;
+  }
+
+  .HeadLine-gamePage {
+    font-size: 15vw;
   }
 }
